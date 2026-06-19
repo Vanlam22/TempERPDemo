@@ -86,6 +86,34 @@
   .up{color:var(--pos);font-weight:600}
   .down{color:var(--danger);font-weight:600}
   .mut{color:var(--muted)}
+  /* AI insight accordion */
+  .ai-intro{font-size:14px;color:#4a423b;margin-bottom:24px}
+  .ai-item{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    margin-bottom:16px;overflow:hidden;border-left:3px solid var(--gold)}
+  .ai-head{display:flex;align-items:center;gap:16px;padding:18px 22px;flex-wrap:wrap}
+  .ai-head .info{flex:1;min-width:200px}
+  .ai-head .dim{font-size:12px;color:var(--gold-dark);font-weight:600;letter-spacing:1px}
+  .ai-head .name{font-size:17px;font-weight:600;margin-top:2px}
+  .ai-head .val{font-size:18px;font-weight:700;color:var(--gold-dark);
+    font-variant-numeric:tabular-nums;white-space:nowrap}
+  .ai-btn{appearance:none;cursor:pointer;font:inherit;font-size:14px;font-weight:600;
+    color:var(--gold-dark);background:var(--gold-soft);border:1px solid var(--gold);
+    padding:9px 16px;border-radius:22px;display:inline-flex;align-items:center;gap:7px;transition:.15s}
+  .ai-btn:hover{background:var(--gold);color:#fff}
+  .ai-btn .ar{transition:transform .2s}
+  .ai-item.open .ai-btn .ar{transform:rotate(180deg)}
+  .ai-body{display:none;padding:0 22px 22px;border-top:1px solid var(--line);margin-top:-1px}
+  .ai-item.open .ai-body{display:block;animation:fade .25s ease}
+  .ai-sec{padding:18px 0 0}
+  .ai-sec+.ai-sec{border-top:1px dashed var(--line)}
+  .ai-label{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;
+    padding:4px 12px;border-radius:6px;margin-bottom:8px}
+  .l-analysis{background:#EEF1EC;color:#4a5942}
+  .l-source{background:#FBF0EC;color:var(--danger)}
+  .l-action{background:var(--gold-soft);color:var(--gold-dark)}
+  .ai-sec p{font-size:14.5px;color:#3f372f;margin:0}
+  .ai-sec ul{margin:4px 0 0;padding-left:20px}
+  .ai-sec li{font-size:14.5px;color:#3f372f;margin:5px 0}
   footer{margin-top:8px;padding-top:24px;border-top:1px solid var(--line);
     font-size:12.5px;color:var(--muted);line-height:1.8}
   footer b{color:#4a423b;font-weight:600}
@@ -107,6 +135,7 @@
     <div class="tabs">
       <button class="tab active" data-t="insights">營運洞察</button>
       <button class="tab" data-t="purchasing">採購分析</button>
+      <button class="tab" data-t="ai">AI 洞見</button>
     </div>
   </header>
 
@@ -265,6 +294,159 @@
     </div>
   </section>
 
+  <!-- ===================== TAB 3: AI INSIGHTS ===================== -->
+  <section class="panel" id="ai">
+    <p class="ai-intro">以下彙整本 Dashboard 各分頁的關鍵指標。點開每個指標的 <b>AI 洞見</b>，即以企業主視角看到該指標的 <b>問題分析 → 問題來源 → 建議對策</b>。</p>
+
+    <div class="section-title">財務與營運指標</div>
+
+    <div class="ai-item">
+      <div class="ai-head">
+        <div class="info"><div class="dim">現金流</div><div class="name">逾期應付帳款</div></div>
+        <div class="val">NT$1,527 萬</div>
+        <button class="ai-btn">AI 洞見 <span class="ar">▾</span></button>
+      </div>
+      <div class="ai-body">
+        <div class="ai-sec"><span class="ai-label l-analysis">問題分析</span>
+          <p>應付帳款近三成（NT$2,655 萬）尚未付清，其中 1,527 萬已過約定付款日、分散在 72 筆。這不是單一大額延遲，而是「付款沒有照帳期節奏走」的系統性失控——錢該付的時候沒付，風險會集中爆發。</p></div>
+        <div class="ai-sec"><span class="ai-label l-source">問題來源</span>
+          <ul>
+            <li>缺乏以「預計付款日」驅動的付款排程，財會憑催款、憑感覺付款。</li>
+            <li>現金調度與應收回款脫節（見「收款覆蓋率」指標）——收不進來，自然付不出去。</li>
+            <li>沒有每週檢視應付帳齡的機制，逾期累積到一定量才被發現。</li>
+          </ul></div>
+        <div class="ai-sec"><span class="ai-label l-action">建議對策</span>
+          <ul>
+            <li>本週匯出 72 筆逾期清單，依「供應商 × 金額」排序，先聯繫前 10 大談分期或展延。</li>
+            <li>建立「每週應付到期表」，未來以到期日自動排定付款，不再被動。</li>
+            <li>關鍵料件供應商優先付款保供料；非關鍵者爭取拉長帳期，把現金留在手上。</li>
+          </ul></div>
+      </div>
+    </div>
+
+    <div class="ai-item">
+      <div class="ai-head">
+        <div class="info"><div class="dim">應收回款</div><div class="name">出貨對收款覆蓋率</div></div>
+        <div class="val">≈ 0%</div>
+        <button class="ai-btn">AI 洞見 <span class="ar">▾</span></button>
+      </div>
+      <div class="ai-body">
+        <div class="ai-sec"><span class="ai-label l-analysis">問題分析</span>
+          <p>已出貨含稅約 NT$1.98 億，系統內卻只有 2 筆收款沖帳。應收帳款的真實回收狀況等於是黑箱。最可能是「錢有收、帳沒沖」的流程斷點，而不是真的一毛沒收回——但只要帳沒沖，你就無法知道誰還欠、欠多久。</p></div>
+        <div class="ai-sec"><span class="ai-label l-source">問題來源</span>
+          <ul>
+            <li>收款沖帳作業沒人固定做，或大量延遲補登。</li>
+            <li>業務與財會之間缺乏對帳交接，現金可能走銀行/現金但未回拋 ERP。</li>
+            <li>ERP 收款模組使用率低，帳務與實際金流兩條平行線。</li>
+          </ul></div>
+        <div class="ai-sec"><span class="ai-label l-action">建議對策</span>
+          <ul>
+            <li>先做一次性盤點：銀行實際入帳 vs 系統紀錄，把差異找出來。</li>
+            <li>指定專人每日/每週補登收款沖帳，並上線應收帳齡表。</li>
+            <li>逾 60 天大額應收專人催收；把「沖帳完成率」列為財會 KPI。</li>
+          </ul></div>
+      </div>
+    </div>
+
+    <div class="ai-item">
+      <div class="ai-head">
+        <div class="info"><div class="dim">營收結構</div><div class="name">前五大客戶營收占比</div></div>
+        <div class="val">38%</div>
+        <button class="ai-btn">AI 洞見 <span class="ar">▾</span></button>
+      </div>
+      <div class="ai-body">
+        <div class="ai-sec"><span class="ai-label l-analysis">問題分析</span>
+          <p>營收靠少數大客戶撐起。最大單一客戶 11.1% 還不算極端，但前五大近四成，任一流失就傷筋動骨，且報價、交期、排程都容易被大客戶牽著走、議價力被稀釋。</p></div>
+        <div class="ai-sec"><span class="ai-label l-source">問題來源</span>
+          <ul>
+            <li>業務資源長期向大客戶傾斜，中小客戶開發不足。</li>
+            <li>新客來源有限（通路或產品線單一），缺乏第二梯隊客戶。</li>
+            <li>沒有客戶分級經營策略，大小客戶用同一套方式服務。</li>
+          </ul></div>
+        <div class="ai-sec"><span class="ai-label l-action">建議對策</span>
+          <ul>
+            <li>對前五大簽年約/框架協議 + 設定預付或保底量，降低突然流失風險。</li>
+            <li>撥部分業務產能培養中段客戶成為第二梯隊。</li>
+            <li>設定目標：12 個月內單一客戶占比壓到 10% 以下、前五大降到 30% 以內。</li>
+          </ul></div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:36px">採購指標</div>
+
+    <div class="ai-item">
+      <div class="ai-head">
+        <div class="info"><div class="dim">採購規模</div><div class="name">月度採購波動</div></div>
+        <div class="val">−44% ~ +61%</div>
+        <button class="ai-btn">AI 洞見 <span class="ar">▾</span></button>
+      </div>
+      <div class="ai-body">
+        <div class="ai-sec"><span class="ai-label l-analysis">問題分析</span>
+          <p>採購總額 NT$1.03 億、24 個月穩定成長是好事，但單月環比劇烈震盪（-44%～+61%）。這代表採購節奏跟著訂單臨時起量、缺乏前置規劃，容易推高急單成本、在議價上居於弱勢。</p></div>
+        <div class="ai-sec"><span class="ai-label l-source">問題來源</span>
+          <ul>
+            <li>採購被銷售訂單牽著走，沒有需求預測與安全庫存緩衝。</li>
+            <li>集中下單的月份（如年底）沒有把規模化議價的機會用起來。</li>
+            <li>缺乏年度/季度採購計畫，全憑當月需求臨時下單。</li>
+          </ul></div>
+        <div class="ai-sec"><span class="ai-label l-action">建議對策</span>
+          <ul>
+            <li>對 Top 品項導入滾動需求預測與安全庫存，平滑每月採購量。</li>
+            <li>高頻料件改長約/季度框架採購鎖價，淡季備、旺季用。</li>
+            <li>用淡旺季數據編年度採購預算，把波動轉成可規劃的節奏。</li>
+          </ul></div>
+      </div>
+    </div>
+
+    <div class="ai-item">
+      <div class="ai-head">
+        <div class="info"><div class="dim">供應商結構</div><div class="name">供應商集中度（最大占比）</div></div>
+        <div class="val">4.4%</div>
+        <button class="ai-btn">AI 洞見 <span class="ar">▾</span></button>
+      </div>
+      <div class="ai-body">
+        <div class="ai-sec"><span class="ai-label l-analysis">問題分析</span>
+          <p>40 家供應商、最大僅占 4.4%，採購非常分散。供應安全上是優點（沒有斷鏈風險），但反面是——每家量都不大，議價籌碼被稀釋，很可能多付了「分散的代價」。</p></div>
+        <div class="ai-sec"><span class="ai-label l-source">問題來源</span>
+          <ul>
+            <li>同類料件分散下單給多家供應商，量價優勢沒被集中。</li>
+            <li>沒有「以量換折扣」的採購策略。</li>
+            <li>供應商主檔的分類/地區未維護，無法做有效的品類管理。</li>
+          </ul></div>
+        <div class="ai-sec"><span class="ai-label l-action">建議對策</span>
+          <ul>
+            <li>同品類篩 2–3 家主力集中下單換量價，另留 1 家備援維持供應安全。</li>
+            <li>補齊供應商分類資料，建立品類採購策略（一邊談價、一邊控風險）。</li>
+            <li>定期檢視價格與交期表現，淘汰長期高價/交期差的尾端供應商。</li>
+          </ul></div>
+      </div>
+    </div>
+
+    <div class="ai-item">
+      <div class="ai-head">
+        <div class="info"><div class="dim">採購品項</div><div class="name">標準料件採購集中度</div></div>
+        <div class="val">Top10 標準料</div>
+        <button class="ai-btn">AI 洞見 <span class="ar">▾</span></button>
+      </div>
+      <div class="ai-body">
+        <div class="ai-sec"><span class="ai-label l-analysis">問題分析</span>
+          <p>金額前 10 大集中在電容、電阻、蜂鳴器、穩壓 IC、機構件等標準料（各約 100~170 萬）。這些正是集中採購與議價最有效的標的，目前卻是分散採購，議價空間沒被釋放出來。</p></div>
+        <div class="ai-sec"><span class="ai-label l-source">問題來源</span>
+          <ul>
+            <li>標準料沒有做集中採購或年度鎖量。</li>
+            <li>平均單價沒有被系統性追蹤、跨期比較，漲價不易被察覺。</li>
+            <li>可能存在多個料號買到同功能料，採購量被切碎。</li>
+          </ul></div>
+        <div class="ai-sec"><span class="ai-label l-action">建議對策</span>
+          <ul>
+            <li>對 Top 10 標準料做年度框架詢價、鎖量鎖價。</li>
+            <li>建立料件均價趨勢追蹤，單價異常上漲自動示警。</li>
+            <li>檢視料號歸併/替代料的可能，把同功能料的採購量併大、擴大議價籌碼。</li>
+          </ul></div>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <b>說明</b>　本頁數據由 ERP 範例資料庫實際彙總計算（金額單位 NT$，採購金額為未稅）。此為去識別化練習資料：表名經跳碼處理、日期已重新對映至 2024–2026、客戶與供應商名稱為虛擬公司，數字僅供分析示範，非典華真實營運數據。<br>
     典華 Denwell · 標準色 #AC7E52 · 由 ERP 資料自動產出
@@ -278,6 +460,11 @@
       document.querySelectorAll('.tab').forEach(function(b){ b.classList.toggle('active', b===btn); });
       document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id===t); });
       window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+  document.querySelectorAll('.ai-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.closest('.ai-item').classList.toggle('open');
     });
   });
 </script>
