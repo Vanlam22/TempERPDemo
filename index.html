@@ -8,7 +8,7 @@
   :root{
     --gold:#AC7E52; --gold-dark:#8A6238; --gold-soft:#EFE4D6;
     --ink:#2B2521; --muted:#7A6F65; --line:#E7DECF;
-    --cream:#FAF7F1; --card:#FFFFFF; --danger:#B4533B;
+    --cream:#FAF7F1; --card:#FFFFFF; --danger:#B4533B; --pos:#5E7D55;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
@@ -16,14 +16,25 @@
     background:var(--cream); color:var(--ink); line-height:1.7;
     -webkit-font-smoothing:antialiased; padding:0 0 64px;
   }
-  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
-  header{padding:40px 0 28px;border-bottom:1px solid var(--line);margin-bottom:40px}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+  header{padding:40px 0 0;border-bottom:1px solid var(--line);margin-bottom:34px}
   .logo svg{height:42px;width:auto;display:block}
-  .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline}
+  .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline}
   h1{font-size:30px;font-weight:600;letter-spacing:.5px}
   .sub{color:var(--muted);font-size:14px}
-  .scope{margin-top:14px;font-size:13px;color:var(--muted);background:var(--gold-soft);
+  .scope{margin:14px 0 22px;font-size:13px;color:var(--muted);background:var(--gold-soft);
     display:inline-block;padding:6px 14px;border-radius:20px}
+  /* tabs */
+  .tabs{display:flex;gap:4px;margin-top:6px}
+  .tab{appearance:none;border:none;background:none;cursor:pointer;font:inherit;
+    padding:12px 22px;font-size:15px;font-weight:600;color:var(--muted);
+    border-bottom:3px solid transparent;border-radius:8px 8px 0 0;transition:.15s}
+  .tab:hover{color:var(--gold-dark);background:#F3EBDD}
+  .tab.active{color:var(--gold-dark);border-bottom-color:var(--gold)}
+  .panel{display:none}
+  .panel.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  /* insight/action shared */
   .section-title{display:flex;align-items:center;gap:12px;margin:8px 0 22px;font-size:13px;
     letter-spacing:2px;color:var(--gold-dark);font-weight:600}
   .section-title::before{content:"";width:26px;height:2px;background:var(--gold)}
@@ -47,10 +58,37 @@
   .action p{font-size:15px;color:#4a423b}
   .impact{margin-top:10px;font-size:13px;color:var(--gold-dark);font-weight:600}
   .block{margin-bottom:48px}
+  @media(min-width:760px){ .grid-3{grid-template-columns:repeat(3,1fr)} }
+  /* KPI strip */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:34px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .kpi .k{font-size:12px;color:var(--muted);letter-spacing:1px}
+  .kpi .v{font-size:23px;font-weight:700;color:var(--gold-dark);margin-top:4px;
+    font-variant-numeric:tabular-nums}
+  @media(max-width:680px){ .kpis{grid-template-columns:repeat(2,1fr)} }
+  /* tables */
+  .tbl-wrap{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;margin-bottom:14px}
+  .cap{font-size:13.5px;color:#4a423b;margin:0 0 30px}
+  .cap b{color:var(--gold-dark);font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+  th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:#F6EEE1;color:var(--gold-dark);font-weight:600;font-size:12.5px;letter-spacing:.5px}
+  td.r,th.r{text-align:right}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#FBF7F0}
+  tr.total td{background:#F6EEE1;font-weight:700;color:var(--ink);border-top:2px solid var(--gold)}
+  .rk{display:inline-flex;width:22px;height:22px;border-radius:6px;background:var(--gold-soft);
+    color:var(--gold-dark);font-weight:600;font-size:12px;align-items:center;justify-content:center}
+  .bar{position:relative;height:18px;background:#F0E8DA;border-radius:4px;min-width:90px}
+  .bar i{position:absolute;left:0;top:0;height:100%;background:var(--gold);border-radius:4px;display:block}
+  .bar span{position:absolute;right:6px;top:0;line-height:18px;font-size:11.5px;color:#4a423b}
+  .up{color:var(--pos);font-weight:600}
+  .down{color:var(--danger);font-weight:600}
+  .mut{color:var(--muted)}
   footer{margin-top:8px;padding-top:24px;border-top:1px solid var(--line);
     font-size:12.5px;color:var(--muted);line-height:1.8}
   footer b{color:#4a423b;font-weight:600}
-  @media(min-width:760px){ .grid-3{grid-template-columns:repeat(3,1fr)} }
 </style>
 </head>
 <body>
@@ -61,82 +99,187 @@
         <path d="M70.4365 16.379H65.8714V20.9374H70.4365V16.379Z" fill="#AC7E52"/><path d="M70.4365 22.4568H65.8714V27.0152H70.4365V22.4568Z" fill="#AC7E52"/><path d="M64.247 16.379H59.6954V20.9374H64.247V16.379Z" fill="#AC7E52"/><path d="M76.6396 16.379H72.0677V20.9374H76.6396V16.379Z" fill="#AC7E52"/><path d="M76.6396 22.4568H72.0677V27.0152H76.6396V22.4568Z" fill="#AC7E52"/><path d="M64.2437 22.4568H59.692V27.0152H64.2437V22.4568Z" fill="#AC7E52"/><path d="M137.303 11.2724H139.763V7.77326H150.697V5.31302H139.763V0.822327H137.303V5.31302H131.685V5.912V7.17427V7.77326H137.303V11.2724Z" fill="#AC7E52"/><path d="M120.992 11.2724H123.452V7.77326H129.222V5.31302H123.452V0.822327H120.992V5.31302H110.247V7.77326H120.992V11.2724Z" fill="#AC7E52"/><path d="M117.431 16.511V20.9645H111.195V23.4247H117.431V28.4907H119.888V23.4247H126.305V20.9645H119.888V16.511H117.431Z" fill="#AC7E52"/><path d="M143.323 28.4907V23.4247H149.75V20.9645H143.323V16.511H140.863V20.9645H134.64V23.4247H140.863V28.4907H143.323Z" fill="#AC7E52"/><path d="M131.726 29.6616V15.1641H149.75V12.7073H111.198V15.1641H129.225V29.6616H109.052C110.741 25.1139 110.879 20.1355 109.444 15.5013C108.01 10.8672 105.084 6.83714 101.122 4.03844C97.1593 1.23974 92.383 -0.170623 87.5359 0.0268465C82.6889 0.224316 78.043 2.01854 74.3215 5.13028C70.6002 2.02267 65.9565 0.231521 61.1123 0.0352937C56.2681 -0.160933 51.4947 1.24875 47.5343 4.0452C43.5739 6.84165 40.6483 10.8682 39.2124 15.4988C37.7764 20.1295 37.9105 25.1049 39.5939 29.6514H36.3655V7.82402H28.1861V10.2809H33.912V29.6514H28V32.1083H40.6937C42.2043 35.0351 44.3535 37.5849 46.9825 39.5689C49.6115 41.5529 52.6529 42.9204 55.8818 43.5703C59.1107 44.2202 62.4443 44.1357 65.6362 43.3233C68.828 42.5108 71.7963 40.991 74.3215 38.8765C76.8487 40.9874 79.8177 42.504 83.0093 43.3143C86.2009 44.1247 89.5337 44.2081 92.7619 43.5585C95.99 42.9089 99.0312 41.5429 101.661 39.5611C104.291 37.5793 106.442 35.0324 107.956 32.1083H129.225V43.181H131.726V32.1218H151.909V29.6616H131.726ZM70.5042 29.912L70.247 29.3299H67.6345L68.2234 30.6836C69.262 33.1069 70.7294 35.3229 72.555 37.225C69.6792 39.5593 66.2009 41.031 62.523 41.4696C58.8451 41.9081 55.1182 41.2956 51.7742 39.7029C48.4301 38.1103 45.6058 35.6027 43.6284 32.4708C41.651 29.3388 40.6016 25.7107 40.6016 22.0068C40.6016 18.3028 41.651 14.6747 43.6284 11.5427C45.6058 8.4108 48.4301 5.90324 51.7742 4.31059C55.1182 2.71794 58.8451 2.10541 62.523 2.54396C66.2009 2.98251 69.6792 4.45419 72.555 6.78849C70.75 8.66893 69.2937 10.8552 68.2538 13.2453L67.6582 14.6159H70.2741L70.5313 14.0372C71.4602 11.9569 72.7452 10.0547 74.3283 8.41624C77.8533 12.0629 79.8238 16.9365 79.8238 22.0085C79.8238 27.0804 77.8533 31.954 74.3283 35.6007C72.7281 33.9448 71.4334 32.0189 70.5042 29.912ZM88.4399 41.6007C83.9465 41.5916 79.5928 40.0384 76.1083 37.2013C80.0403 33.1114 82.2364 27.6582 82.2364 21.9848C82.2364 16.3113 80.0403 10.8581 76.1083 6.76818C78.5446 4.79344 81.4193 3.43235 84.4909 2.79929C87.5625 2.16623 90.7411 2.2797 93.7597 3.13017C96.7783 3.98064 99.5487 5.54325 101.838 7.68669C104.127 9.83014 105.869 12.4918 106.916 15.4479C107.963 18.4041 108.285 21.5684 107.855 24.6749C107.425 27.7815 106.256 30.7395 104.446 33.3003C102.636 35.8612 100.237 37.9501 97.4518 39.3915C94.6666 40.8329 91.576 41.5847 88.4399 41.5837V41.6007Z" fill="#AC7E52"/><path d="M127.783 35.6075H112.924V38.0677H127.783V35.6075Z" fill="#AC7E52"/><path d="M148.047 35.6075H133.12V38.0677H148.047V35.6075Z" fill="#AC7E52"/><path d="M8.04736 20.8731H13.8003V32.1083H26.7546V20.8731H32.4873V18.4162H26.7546V0.818939H24.2978V7.82402H16.2436V0.832476H13.7969V18.4298H8.04398L8.04736 20.8731ZM16.2436 10.2809H24.2978V18.4027H16.2436V10.2809ZM16.2436 20.8731H24.2978V29.6514H16.2436V20.8731Z" fill="#AC7E52"/><path d="M12.3553 29.6514H6.63283V10.2809H12.3553V7.82404H4.17259V29.6514H0V32.1083H12.3553V29.6514Z" fill="#AC7E52"/><path d="M4.64636 43.1709L8.1692 43.1506L15.7225 35.5939H12.2234L4.64636 43.1709Z" fill="#AC7E52"/><path d="M25.357 35.5939L32.9103 43.1506L36.4332 43.1709L28.8562 35.5939H25.357Z" fill="#AC7E52"/>
       </svg>
     </div>
-    <div class="meta" style="margin-top:24px">
+    <div class="meta">
       <h1>ERP 營運洞察</h1>
-      <span class="sub">三個關鍵注意事項 · 三個建議動作</span>
+      <span class="sub">營運注意事項 · 採購數字分析</span>
     </div>
-    <div class="scope">資料來源：公司 ERP 範例資料庫 · 銷售訂單 386 筆／應付憑單 403 筆／出貨明細 917 筆 · 產出日 2026-06-19</div>
+    <div class="scope">資料來源：公司 ERP 範例資料庫 · 銷售 386 筆／採購 442 筆／應付 403 筆 · 產出日 2026-06-19</div>
+    <div class="tabs">
+      <button class="tab active" data-t="insights">營運洞察</button>
+      <button class="tab" data-t="purchasing">採購分析</button>
+    </div>
   </header>
 
-  <div class="block">
-    <div class="section-title">三個最關鍵的洞察（需要注意）</div>
-    <div class="grid grid-3">
-
-      <div class="card">
-        <div class="tag">01 · 現金流</div>
-        <h3>逾期應付帳款堆積</h3>
-        <div class="metric">NT$1,527<small>萬</small></div>
-        <p>應付未付共 <b>NT$2,655 萬</b>（未付率 29%），其中 <b>72 筆、約 1,527 萬</b>已超過預計付款日仍未付清。</p>
-        <div class="risk">⚠ <span><b>風險：</b>供應商信用與關係受損、可能斷料或被要求預付，現金壓力集中爆發。</span></div>
+  <!-- ===================== TAB 1: INSIGHTS ===================== -->
+  <section class="panel active" id="insights">
+    <div class="block">
+      <div class="section-title">三個最關鍵的洞察（需要注意）</div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="tag">01 · 現金流</div>
+          <h3>逾期應付帳款堆積</h3>
+          <div class="metric">NT$1,527<small>萬</small></div>
+          <p>應付未付共 <b>NT$2,655 萬</b>（未付率 29%），其中 <b>72 筆、約 1,527 萬</b>已超過預計付款日仍未付清。</p>
+          <div class="risk">⚠ <span><b>風險：</b>供應商信用與關係受損、可能斷料或被要求預付，現金壓力集中爆發。</span></div>
+        </div>
+        <div class="card">
+          <div class="tag">02 · 應收回款</div>
+          <h3>出貨與收款嚴重脫節</h3>
+          <div class="metric">≈0%<small>收款覆蓋率</small></div>
+          <p>已出貨含稅約 <b>NT$1.98 億</b>，但系統內僅 <b>2 筆收款沖帳（1.1 萬）</b>。等於幾乎無法掌握實際收回多少現金。</p>
+          <div class="risk">⚠ <span><b>風險：</b>帳齡與呆帳完全是盲區，回款斷點無人追，現金看得到卻收不回。</span></div>
+        </div>
+        <div class="card">
+          <div class="tag">03 · 營收結構</div>
+          <h3>營收高度集中於少數大客戶</h3>
+          <div class="metric">38%<small>前五大客戶</small></div>
+          <p>總訂單 <b>NT$1.99 億</b>中，前 5 大客戶占 <b>38%</b>，最大單一客戶（1101 茂光電）占 <b>11.1%</b>。客戶數共 42 家。</p>
+          <div class="risk">⚠ <span><b>風險：</b>任一大客戶流失或砍單，營收即大幅震盪，議價與排程也受制於對方。</span></div>
+        </div>
       </div>
-
-      <div class="card">
-        <div class="tag">02 · 應收回款</div>
-        <h3>出貨與收款嚴重脫節</h3>
-        <div class="metric">≈0%<small>收款覆蓋率</small></div>
-        <p>已出貨含稅約 <b>NT$1.98 億</b>，但系統內僅 <b>2 筆收款沖帳（1.1 萬）</b>。等於幾乎無法掌握實際收回多少現金。</p>
-        <div class="risk">⚠ <span><b>風險：</b>帳齡與呆帳完全是盲區，回款斷點無人追，現金看得到卻收不回。</span></div>
-      </div>
-
-      <div class="card">
-        <div class="tag">03 · 營收結構</div>
-        <h3>營收高度集中於少數大客戶</h3>
-        <div class="metric">38%<small>前五大客戶</small></div>
-        <p>總訂單 <b>NT$1.99 億</b>中，前 5 大客戶占 <b>38%</b>，最大單一客戶（1101 茂光電）占 <b>11.1%</b>。客戶數共 42 家。</p>
-        <div class="risk">⚠ <span><b>風險：</b>任一大客戶流失或砍單，營收即大幅震盪，議價與排程也受制於對方。</span></div>
-      </div>
-
     </div>
-  </div>
-
-  <div class="block">
-    <div class="section-title">三個建議我採取的動作</div>
-    <div class="grid">
-
-      <div class="action">
-        <div class="num">1</div>
-        <div>
-          <h3>本週啟動逾期應付清理</h3>
-          <p>把 72 筆逾期款依「供應商 × 金額」排序，先處理金額大、關係關鍵者，主動協商分期或展延付款排程，避免斷料與信用受損。</p>
-          <div class="impact">→ 預期：守住關鍵供應鏈，把 1,527 萬逾期壓力轉為可控的付款計畫</div>
+    <div class="block">
+      <div class="section-title">三個建議我採取的動作</div>
+      <div class="grid">
+        <div class="action">
+          <div class="num">1</div>
+          <div>
+            <h3>本週啟動逾期應付清理</h3>
+            <p>把 72 筆逾期款依「供應商 × 金額」排序，先處理金額大、關係關鍵者，主動協商分期或展延付款排程，避免斷料與信用受損。</p>
+            <div class="impact">→ 預期：守住關鍵供應鏈，把 1,527 萬逾期壓力轉為可控的付款計畫</div>
+          </div>
+        </div>
+        <div class="action">
+          <div class="num">2</div>
+          <div>
+            <h3>補登收款沖帳，建立每週應收帳齡表</h3>
+            <p>要求財會／業務把出貨對應的實收款項即時入帳沖帳，建立帳齡報表，鎖定逾 60 天未收的大額客戶集中催收。</p>
+            <div class="impact">→ 預期：把「收款覆蓋率 0%」的盲區補上，現金回收進度可被每週追蹤</div>
+          </div>
+        </div>
+        <div class="action">
+          <div class="num">3</div>
+          <div>
+            <h3>大客戶綁定 + 中段客戶擴張並行</h3>
+            <p>對前 5 大客戶建立專屬維繫（年約、預付、VIP 條件）降低流失；同時把業務資源投向中段客戶，目標把單一客戶占比壓到 10% 以下。</p>
+            <div class="impact">→ 預期：降低集中度風險，營收來源更分散、更抗波動</div>
+          </div>
         </div>
       </div>
-
-      <div class="action">
-        <div class="num">2</div>
-        <div>
-          <h3>補登收款沖帳，建立每週應收帳齡表</h3>
-          <p>要求財會／業務把出貨對應的實收款項即時入帳沖帳，建立帳齡報表，鎖定逾 60 天未收的大額客戶集中催收。</p>
-          <div class="impact">→ 預期：把「收款覆蓋率 0%」的盲區補上，現金回收進度可被每週追蹤</div>
-        </div>
-      </div>
-
-      <div class="action">
-        <div class="num">3</div>
-        <div>
-          <h3>大客戶綁定 + 中段客戶擴張並行</h3>
-          <p>對前 5 大客戶建立專屬維繫（年約、預付、VIP 條件）降低流失；同時把業務資源投向中段客戶，目標把單一客戶占比壓到 10% 以下。</p>
-          <div class="impact">→ 預期：降低集中度風險，營收來源更分散、更抗波動</div>
-        </div>
-      </div>
-
     </div>
-  </div>
+  </section>
+
+  <!-- ===================== TAB 2: PURCHASING ===================== -->
+  <section class="panel" id="purchasing">
+    <div class="kpis">
+      <div class="kpi"><div class="k">採購總額(未稅)</div><div class="v">NT$1.03 億</div></div>
+      <div class="kpi"><div class="k">採購單數</div><div class="v">442 張</div></div>
+      <div class="kpi"><div class="k">供應商家數</div><div class="v">40 家</div></div>
+      <div class="kpi"><div class="k">月均採購</div><div class="v">NT$427 萬</div></div>
+    </div>
+
+    <!-- TABLE 1: supplier ranking -->
+    <div class="block">
+      <div class="section-title">表一 · 供應商採購排行（占比視覺化）</div>
+      <p class="cap">採購相當分散 —— 最大供應商僅占 <b>4.4%</b>，前 10 大合計約 <b>40%</b>，無單一供應商依賴。右欄為各家目前的<b>應付未付餘額</b>。</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>供應商</th><th class="r">採購金額</th><th class="r">筆數</th><th style="width:200px">占總採購比</th><th class="r">應付未付</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rk">1</span></td><td>324　大貿易</td><td class="r">4,564,628</td><td class="r">15</td><td><div class="bar"><i style="width:100%"></i><span>4.4%</span></div></td><td class="r down">1,390,101</td></tr>
+            <tr><td><span class="rk">2</span></td><td>312　華材料</td><td class="r">4,544,332</td><td class="r">17</td><td><div class="bar"><i style="width:99.6%"></i><span>4.4%</span></div></td><td class="r">985,202</td></tr>
+            <tr><td><span class="rk">3</span></td><td>104　凱工業</td><td class="r">4,520,872</td><td class="r">15</td><td><div class="bar"><i style="width:99%"></i><span>4.4%</span></div></td><td class="r">276,427</td></tr>
+            <tr><td><span class="rk">4</span></td><td>201　華工業</td><td class="r">4,355,445</td><td class="r">17</td><td><div class="bar"><i style="width:95.4%"></i><span>4.2%</span></div></td><td class="r down">1,754,491</td></tr>
+            <tr><td><span class="rk">5</span></td><td>301　耀金屬</td><td class="r">4,101,073</td><td class="r">13</td><td><div class="bar"><i style="width:89.8%"></i><span>4.0%</span></div></td><td class="r">875,898</td></tr>
+            <tr><td><span class="rk">6</span></td><td>326　勤貿易</td><td class="r">4,099,501</td><td class="r">16</td><td><div class="bar"><i style="width:89.8%"></i><span>4.0%</span></div></td><td class="r">838,146</td></tr>
+            <tr><td><span class="rk">7</span></td><td>204　耀電子</td><td class="r">4,017,200</td><td class="r">16</td><td><div class="bar"><i style="width:88%"></i><span>3.9%</span></div></td><td class="r down">1,995,648</td></tr>
+            <tr><td><span class="rk">8</span></td><td>314　瑞零件</td><td class="r">3,776,894</td><td class="r">11</td><td><div class="bar"><i style="width:82.7%"></i><span>3.7%</span></div></td><td class="r down">1,593,405</td></tr>
+            <tr><td><span class="rk">9</span></td><td>329　茂金屬</td><td class="r">3,645,082</td><td class="r">12</td><td><div class="bar"><i style="width:79.9%"></i><span>3.6%</span></div></td><td class="r down">1,670,285</td></tr>
+            <tr><td><span class="rk">10</span></td><td>318　晶科技</td><td class="r">3,549,069</td><td class="r">9</td><td><div class="bar"><i style="width:77.8%"></i><span>3.5%</span></div></td><td class="r">962,395</td></tr>
+            <tr class="total"><td></td><td>前 10 大合計</td><td class="r">41,174,096</td><td class="r">141</td><td>約 40.1%</td><td class="r">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TABLE 2: monthly trend -->
+    <div class="block">
+      <div class="section-title">表二 · 月度採購趨勢（環比漲跌色標）</div>
+      <p class="cap">24 個月採購呈<b>上升趨勢</b>，月均 <b>NT$427 萬</b>。波動偏大（單月環比 -44% ～ +61%），高峰落在 <b>2025-12（631 萬）</b>與 <b>2026-05（601 萬）</b>。</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>月份</th><th class="r">採購金額</th><th class="r">筆數</th><th class="r">平均單筆</th><th class="r">環比</th><th style="width:160px">趨勢</th></tr></thead>
+          <tbody>
+            <tr><td>2024-07</td><td class="r">3,951,357</td><td class="r">17</td><td class="r">232,433</td><td class="r mut">—</td><td><div class="bar"><i style="width:62.6%"></i></div></td></tr>
+            <tr><td>2024-08</td><td class="r">2,696,695</td><td class="r">16</td><td class="r">168,543</td><td class="r down">−31.8%</td><td><div class="bar"><i style="width:42.7%"></i></div></td></tr>
+            <tr><td>2024-09</td><td class="r">3,139,507</td><td class="r">15</td><td class="r">209,300</td><td class="r up">+16.4%</td><td><div class="bar"><i style="width:49.8%"></i></div></td></tr>
+            <tr><td>2024-10</td><td class="r">4,470,768</td><td class="r">19</td><td class="r">235,304</td><td class="r up">+42.4%</td><td><div class="bar"><i style="width:70.9%"></i></div></td></tr>
+            <tr><td>2024-11</td><td class="r">4,685,756</td><td class="r">20</td><td class="r">234,288</td><td class="r up">+4.8%</td><td><div class="bar"><i style="width:74.3%"></i></div></td></tr>
+            <tr><td>2024-12</td><td class="r">4,405,873</td><td class="r">21</td><td class="r">209,803</td><td class="r down">−6.0%</td><td><div class="bar"><i style="width:69.8%"></i></div></td></tr>
+            <tr><td>2025-01</td><td class="r">4,643,217</td><td class="r">15</td><td class="r">309,548</td><td class="r up">+5.4%</td><td><div class="bar"><i style="width:73.6%"></i></div></td></tr>
+            <tr><td>2025-02</td><td class="r">2,968,487</td><td class="r">13</td><td class="r">228,345</td><td class="r down">−36.1%</td><td><div class="bar"><i style="width:47%"></i></div></td></tr>
+            <tr><td>2025-03</td><td class="r">4,788,221</td><td class="r">19</td><td class="r">252,012</td><td class="r up">+61.3%</td><td><div class="bar"><i style="width:75.9%"></i></div></td></tr>
+            <tr><td>2025-04</td><td class="r">3,971,910</td><td class="r">20</td><td class="r">198,596</td><td class="r down">−17.0%</td><td><div class="bar"><i style="width:62.9%"></i></div></td></tr>
+            <tr><td>2025-05</td><td class="r">2,214,223</td><td class="r">16</td><td class="r">138,389</td><td class="r down">−44.3%</td><td><div class="bar"><i style="width:35.1%"></i></div></td></tr>
+            <tr><td>2025-06</td><td class="r">3,157,659</td><td class="r">21</td><td class="r">150,365</td><td class="r up">+42.6%</td><td><div class="bar"><i style="width:50%"></i></div></td></tr>
+            <tr><td>2025-07</td><td class="r">4,903,502</td><td class="r">17</td><td class="r">288,441</td><td class="r up">+55.3%</td><td><div class="bar"><i style="width:77.7%"></i></div></td></tr>
+            <tr><td>2025-08</td><td class="r">3,996,492</td><td class="r">17</td><td class="r">235,088</td><td class="r down">−18.5%</td><td><div class="bar"><i style="width:63.3%"></i></div></td></tr>
+            <tr><td>2025-09</td><td class="r">3,829,690</td><td class="r">16</td><td class="r">239,356</td><td class="r down">−4.2%</td><td><div class="bar"><i style="width:60.7%"></i></div></td></tr>
+            <tr><td>2025-10</td><td class="r">4,552,873</td><td class="r">22</td><td class="r">206,949</td><td class="r up">+18.9%</td><td><div class="bar"><i style="width:72.2%"></i></div></td></tr>
+            <tr><td>2025-11</td><td class="r">5,459,457</td><td class="r">20</td><td class="r">272,973</td><td class="r up">+19.9%</td><td><div class="bar"><i style="width:86.5%"></i></div></td></tr>
+            <tr><td>2025-12</td><td class="r">6,310,223</td><td class="r">25</td><td class="r">252,409</td><td class="r up">+15.6%</td><td><div class="bar"><i style="width:100%"></i></div></td></tr>
+            <tr><td>2026-01</td><td class="r">3,671,536</td><td class="r">17</td><td class="r">215,973</td><td class="r down">−41.8%</td><td><div class="bar"><i style="width:58.2%"></i></div></td></tr>
+            <tr><td>2026-02</td><td class="r">4,208,682</td><td class="r">13</td><td class="r">323,745</td><td class="r up">+14.6%</td><td><div class="bar"><i style="width:66.7%"></i></div></td></tr>
+            <tr><td>2026-03</td><td class="r">4,983,479</td><td class="r">17</td><td class="r">293,146</td><td class="r up">+18.4%</td><td><div class="bar"><i style="width:79%"></i></div></td></tr>
+            <tr><td>2026-04</td><td class="r">5,662,959</td><td class="r">21</td><td class="r">269,665</td><td class="r up">+13.6%</td><td><div class="bar"><i style="width:89.7%"></i></div></td></tr>
+            <tr><td>2026-05</td><td class="r">6,012,502</td><td class="r">23</td><td class="r">261,413</td><td class="r up">+6.2%</td><td><div class="bar"><i style="width:95.3%"></i></div></td></tr>
+            <tr><td>2026-06</td><td class="r">3,898,038</td><td class="r">22</td><td class="r">177,184</td><td class="r down">−35.2%</td><td><div class="bar"><i style="width:61.8%"></i></div></td></tr>
+            <tr class="total"><td>合計 / 月均</td><td class="r">102,583,106</td><td class="r">442</td><td class="r">232,089</td><td class="r">—</td><td>24 個月</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cap mut" style="margin-top:6px">※ 註：2026-06 為當月（截至 6/19），尚未結束故金額偏低，屬正常現象。</p>
+    </div>
+
+    <!-- TABLE 3: item top -->
+    <div class="block">
+      <div class="section-title">表三 · 採購品項 Top 10（金額長條 + 均價）</div>
+      <p class="cap">採購集中在電子被動元件與機構件。下表為金額前 10 大品項，含<b>採購量</b>與推算<b>平均單價</b>，可作為議價與集中採購的切入點。</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>品號 / 品名</th><th class="r">採購量</th><th class="r">平均單價</th><th class="r">採購金額</th><th style="width:150px">金額占比</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rk">1</span></td><td>4-6-052-2311-1103<br><span class="mut">鋅盒 S2-3517 銘板</span></td><td class="r">32,200</td><td class="r">54</td><td class="r">1,738,112</td><td><div class="bar"><i style="width:100%"></i></div></td></tr>
+            <tr><td><span class="rk">2</span></td><td>3-1-04-163-224<br><span class="mut">陶片電容 224 100V Y5V</span></td><td class="r">32,000</td><td class="r">52</td><td class="r">1,666,580</td><td><div class="bar"><i style="width:95.9%"></i></div></td></tr>
+            <tr><td><span class="rk">3</span></td><td>3-1-11-400-007A<br><span class="mut">蜂鳴器 OBO-1212C-A2</span></td><td class="r">41,000</td><td class="r">32</td><td class="r">1,312,470</td><td><div class="bar"><i style="width:75.5%"></i></div></td></tr>
+            <tr><td><span class="rk">4</span></td><td>3-1-04-442-010<br><span class="mut">鋁質電容 105°C 10uf</span></td><td class="r">33,200</td><td class="r">36</td><td class="r">1,198,375</td><td><div class="bar"><i style="width:68.9%"></i></div></td></tr>
+            <tr><td><span class="rk">5</span></td><td>032-1351-6004<br><span class="mut">D.L AL 0.35*1.6*4.5</span></td><td class="r">27,200</td><td class="r">43</td><td class="r">1,160,662</td><td><div class="bar"><i style="width:66.8%"></i></div></td></tr>
+            <tr><td><span class="rk">6</span></td><td>3-1-03-213-047<br><span class="mut">普通電阻 1/4W 4.7K</span></td><td class="r">22,000</td><td class="r">52</td><td class="r">1,148,180</td><td><div class="bar"><i style="width:66.1%"></i></div></td></tr>
+            <tr><td><span class="rk">7</span></td><td>3-3-600-CT07A-135G<br><span class="mut">電路板</span></td><td class="r">23,000</td><td class="r">50</td><td class="r">1,145,850</td><td><div class="bar"><i style="width:65.9%"></i></div></td></tr>
+            <tr><td><span class="rk">8</span></td><td>3-2-33-00001-Z<br><span class="mut">錫絲</span></td><td class="r">21,200</td><td class="r">52</td><td class="r">1,096,648</td><td><div class="bar"><i style="width:63.1%"></i></div></td></tr>
+            <tr><td><span class="rk">9</span></td><td>3-5-3C3-LM78L05ACT<br><span class="mut">穩壓 IC · NEC</span></td><td class="r">23,500</td><td class="r">46</td><td class="r">1,078,385</td><td><div class="bar"><i style="width:62%"></i></div></td></tr>
+            <tr><td><span class="rk">10</span></td><td>3-1-24-015-170-1<br><span class="mut">散熱片 G-015槽</span></td><td class="r">20,800</td><td class="r">52</td><td class="r">1,073,740</td><td><div class="bar"><i style="width:61.8%"></i></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
   <footer>
-    <b>說明</b>　本頁洞察由 ERP 範例資料庫實際彙總計算（金額單位 NT$）。此為去識別化練習資料：表名經跳碼處理、日期已重新對映至 2024–2026、客戶名稱為虛擬公司，數字僅供分析示範，非典華真實營運數據。<br>
+    <b>說明</b>　本頁數據由 ERP 範例資料庫實際彙總計算（金額單位 NT$，採購金額為未稅）。此為去識別化練習資料：表名經跳碼處理、日期已重新對映至 2024–2026、客戶與供應商名稱為虛擬公司，數字僅供分析示範，非典華真實營運數據。<br>
     典華 Denwell · 標準色 #AC7E52 · 由 ERP 資料自動產出
   </footer>
 </div>
+
+<script>
+  document.querySelectorAll('.tab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var t = btn.getAttribute('data-t');
+      document.querySelectorAll('.tab').forEach(function(b){ b.classList.toggle('active', b===btn); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id===t); });
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+</script>
 </body>
 </html>
